@@ -59,14 +59,13 @@ export default function LandingPage() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl md:text-7xl font-medium tracking-tight text-slate-900 leading-[1.05] mb-6">
-            Track critical shipments.
-            <br />
-            Control the data you rely on.
+          <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-slate-900 leading-[1.05] mb-6">
+            Track your critical shipments.
+
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl text-slate-800 mb-10 max-w-2xl leading-relaxed">
+          <p className="text-base sm:text-xl text-slate-800 mb-10 max-w-2xl leading-relaxed">
             End-to-end transparency across Origins, Transit Hubs, Customs, and
             Final Delivery.
           </p>
@@ -111,7 +110,7 @@ export default function LandingPage() {
           </div>
 
           {/* Trust Text */}
-          <p className="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase">
+          <p className="text-xs font-bold tracking-[0.2em] text-slate-500 uppercase px-4 md:px-0 mb-2">
             Businesses choose us for reliable delivery
           </p>
         </div>
@@ -124,7 +123,7 @@ export default function LandingPage() {
           <p className="text-[11px] font-bold tracking-[0.15em] text-slate-400 uppercase mb-3">
             Sectors We Serve
           </p>
-          <h2 className="text-4xl md:text-5xl font-medium tracking-tight mb-3">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-3">
             Logistics built for your industry
           </h2>
           <p className="text-lg text-slate-300">
@@ -212,7 +211,7 @@ export default function LandingPage() {
           <p className="text-xs font-bold tracking-[0.15em] text-slate-500 uppercase mb-4">
             How We Work
           </p>
-          <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-slate-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 mb-4">
             A tracking process built for clarity
           </h2>
           <p className="text-lg text-slate-600 max-w-3xl">
