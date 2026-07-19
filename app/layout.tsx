@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Apexbit Cargo Tracking & Logistics',
-  description: 'Modern parcel tracking and logistics management system',
+  description: 'Modern parcel tracking and logistics management system for Apexbit Cargo. Track your shipments, manage logistics, and ensure secure delivery with our advanced platform.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -21,11 +21,11 @@ export const metadata: Metadata = {
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/icon.svg',
+        url: '/gemini-svg.svg',
         type: 'image/svg+xml',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/gemini-svg.svg',
   },
 }
 
