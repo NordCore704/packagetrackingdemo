@@ -1,28 +1,29 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles, ChevronDown, CheckCircle2, ArrowLeft, ShieldCheck  } from "lucide-react";
 import Image from "next/image";
+import { agencies, saas, healthcare, commerce } from "@/exports";
 
 // Placeholder images mimicking the ones in your reference
 const industries = [
   {
     name: "SaaS",
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+      saas,
   },
   {
     name: "Agencies",
     image:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+      agencies,
   },
   {
     name: "eCommerce",
     image:
-      "https://images.unsplash.com/photo-1580828343064-fde4cad202d5?auto=format&fit=crop&w=800&q=80",
+      commerce,
   },
   {
     name: "Healthcare",
     image:
-      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+      healthcare,
   },
 ];
 
@@ -288,14 +289,14 @@ export default function LandingPage() {
         </div>
 
         {/* Contact Footer */}
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <p className="text-xl font-medium text-slate-900">
             Need custom routing?{' '}
             <Link href="tel:+2340000000000" className="text-indigo-600 hover:text-indigo-700 transition-colors">
               Call our logistics team
             </Link>
           </p>
-        </div>
+        </div> */}
 
       </div>
     </section>
