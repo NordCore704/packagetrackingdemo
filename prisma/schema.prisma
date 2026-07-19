@@ -1,0 +1,93 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ParcelStatus {
+  LABEL_CREATED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  HELD_AT_CUSTOMS
+  EXCEPTION
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed password for Admin access
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Parcel {
+  id           String          @id @default(cuid())
+  trackingCode String          @unique
+
+  // Sender Information
+  senderName    String
+  senderPhone   String?
+  senderAddress String?
+  originCity    String
+  originCountry String
+
+  // Receiver Information
+  receiverName       String
+  receiverPhone      String?
+  receiverAddress    String?
+  destinationCity    String
+  destinationCountry String
+
+  // Shipment Details
+  status               ParcelStatus    @default(LABEL_CREATED)
+  dispatchOffice       String
+  pickupDate           DateTime
+  dispatchDate         DateTime
+  expectedDeliveryDate DateTime?
+
+  // Relations
+  packages     PackageItem[]
+  events       TrackingEvent[] 
+  
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([trackingCode])
+}
+
+model PackageItem {
+  id       String @id @default(cuid())
+  parcelId String
+  parcel   Parcel @relation(fields: [parcelId], references: [id], onDelete: Cascade)
+  
+  name     String
+  weight   Float
+  quantity Int      @default(1)
+
+  @@index([parcelId])
+}
+
+model TrackingEvent {
+  id            String   @id @default(cuid())
+  parcelId      String
+  parcel        Parcel   @relation(fields: [parcelId], references: [id], onDelete: Cascade)
+  status        ParcelStatus
+  location      String   
+  statusMessage String   
+  timestamp     DateTime @default(now())
+
+  @@index([parcelId])
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
