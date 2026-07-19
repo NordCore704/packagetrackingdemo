@@ -82,7 +82,7 @@ export function Navbar() {
             <div className="h-px w-full bg-slate-100 my-2"></div>
             
             <Link 
-              href="/" 
+              href="/tracking" 
               onClick={toggleMenu} 
               className="sm:hidden flex justify-center items-center gap-2 mt-2 bg-black text-white px-5 py-3.5 rounded-xl text-sm font-medium hover:bg-slate-800 transition-colors w-full"
             >
