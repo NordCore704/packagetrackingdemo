@@ -66,7 +66,7 @@ export function AdminStatusUpdate() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto font-sans pb-12">
+    <div className="max-w-3xl mx-auto font-sans pb-32 pt-12 px-4 md:px-8">
       
       {/* Header */}
       <div className="mb-8">
