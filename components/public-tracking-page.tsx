@@ -8,13 +8,17 @@ import { Timeline } from './timeline'
 
 export function PublicTrackingPage() {
   const [trackingCode, setTrackingCode] = useState('')
+  const [caseSensitive, setCaseSensitive] = useState(false)
   const [searchedParcel, setSearchedParcel] = useState<any>(null)
   const [searched, setSearched] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
-    const code = trackingCode.trim().toUpperCase()
+    
+    // Respect the case sensitivity toggle
+    const rawCode = trackingCode.trim()
+    const code = caseSensitive ? rawCode : rawCode.toUpperCase()
     
     if (code) {
       setIsLoading(true)
@@ -54,26 +58,40 @@ export function PublicTrackingPage() {
         </p>
 
         <div className="w-full max-w-2xl mx-auto">
-          <form 
-            onSubmit={handleSearch} 
-            className="flex w-full items-center bg-white p-1.5 sm:p-2 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 transition-all focus-within:shadow-[0_8px_30px_rgb(0,0,0,0.12)] focus-within:border-indigo-200"
-          >
-            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 ml-3 sm:ml-4 flex-shrink-0" />
-            <input
-              type="text"
-              value={trackingCode}
-              onChange={(e) => setTrackingCode(e.target.value)}
-              placeholder="e.g., APEX-K9M2X"
-              className="flex-1 min-w-0 bg-transparent border-none outline-none px-2 sm:px-4 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 text-sm sm:text-lg uppercase"
-              disabled={isLoading}
-            />
-            <button
-              type="submit"
-              disabled={isLoading || !trackingCode.trim()}
-              className="px-5 sm:px-8 py-2.5 sm:py-3.5 bg-black text-white text-sm sm:text-base font-medium rounded-full hover:bg-slate-800 transition-colors shadow-md flex-shrink-0 disabled:opacity-70 flex items-center justify-center min-w-[90px] sm:min-w-[120px]"
-            >
-              {isLoading ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : 'Track'}
-            </button>
+          <form onSubmit={handleSearch} className="flex flex-col items-center gap-4">
+            <div className="flex w-full items-center bg-white p-1.5 sm:p-2 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100 transition-all focus-within:shadow-[0_8px_30px_rgb(0,0,0,0.12)] focus-within:border-indigo-200">
+              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 ml-3 sm:ml-4 flex-shrink-0" />
+              <input
+                type="text"
+                value={trackingCode}
+                onChange={(e) => setTrackingCode(e.target.value)}
+                placeholder="e.g., APEX-K9M2X"
+                // Apply uppercase visually only if case sensitivity is OFF
+                className={`flex-1 min-w-0 bg-transparent border-none outline-none px-2 sm:px-4 py-2.5 sm:py-3 text-slate-900 placeholder:text-slate-400 text-sm sm:text-lg ${!caseSensitive ? 'uppercase' : ''}`}
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !trackingCode.trim()}
+                className="px-5 sm:px-8 py-2.5 sm:py-3.5 bg-black text-white text-sm sm:text-base font-medium rounded-full hover:bg-slate-800 transition-colors shadow-md flex-shrink-0 disabled:opacity-70 flex items-center justify-center min-w-[90px] sm:min-w-[120px]"
+              >
+                {isLoading ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : 'Track'}
+              </button>
+            </div>
+            
+            {/* Case Sensitivity Toggle */}
+            <div className="flex items-center gap-3 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200/60">
+              <span className="text-xs font-medium text-slate-600">Case Sensitive Search</span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={caseSensitive}
+                onClick={() => setCaseSensitive(!caseSensitive)}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 ${caseSensitive ? 'bg-indigo-600' : 'bg-slate-300'}`}
+              >
+                <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${caseSensitive ? 'translate-x-5' : 'translate-x-1'}`} />
+              </button>
+            </div>
           </form>
         </div>
       </header>

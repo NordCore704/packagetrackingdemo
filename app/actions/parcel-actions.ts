@@ -151,6 +151,7 @@ export async function getAllParcels() {
 
 export async function createCustomParcel(data: {
   trackingCode: string;
+  status: any;
   senderName: string;
   senderPhone?: string;
   senderAddress?: string;
@@ -171,9 +172,9 @@ export async function createCustomParcel(data: {
   packages: Array<{ name: string; weight: number; quantity: number }>;
 }) {
   try {
-    const formattedCode = data.trackingCode.trim().toUpperCase()
+    
+    const formattedCode = data.trackingCode.trim()
 
-    // 1. Safety Check: Ensure the code isn't already in the database
     const existingParcel = await db.parcel.findUnique({
       where: { trackingCode: formattedCode }
     })
@@ -182,7 +183,6 @@ export async function createCustomParcel(data: {
       return { success: false, error: 'This tracking code is already in use. Please enter a unique code.' }
     }
 
-    // 2. Create the parcel using Nested Writes
     const newParcel = await db.parcel.create({
       data: {
         trackingCode: formattedCode,
@@ -204,7 +204,7 @@ export async function createCustomParcel(data: {
         dispatchDate: new Date(data.dispatchDate),
         expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
         
-        status: 'LABEL_CREATED',
+        status: data.status, // Uses the status selected in the form
         
         packages: {
           create: data.packages.map(pkg => ({
@@ -216,9 +216,9 @@ export async function createCustomParcel(data: {
         
         events: {
           create: {
-            status: 'LABEL_CREATED',
+            status: data.status,
             location: data.dispatchOffice,
-            statusMessage: 'Shipment registered and custom tracking code verified.',
+            statusMessage: `Shipment registered manually. Initial status: ${data.status.replace(/_/g, ' ')}`,
           }
         }
       },

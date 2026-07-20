@@ -50,7 +50,7 @@ export default function LandingPage() {
       ></div>
 
       {/* Main Hero Content */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-32">
+      <main className="max-w-7xl mx-auto px-4 md:px-8 pt-24 pb-12 md:pb-20">
         <div className="max-w-3xl">
           {/* Tag */}
           <div className="flex items-center gap-2 text-indigo-700 font-medium mb-6">
@@ -88,7 +88,7 @@ export default function LandingPage() {
       </main>
 
       {/* Bottom Curve & Trust Banner */}
-      <div className="relative mt-12">
+      <div className="relative mt-8 md:mt-12">
         {/* Soft white overlay curve to mimic the bottom left of the image */}
         <div className="absolute bottom-full left-0 w-full overflow-hidden leading-none z-0">
           <svg

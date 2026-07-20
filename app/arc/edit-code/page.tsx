@@ -6,7 +6,8 @@ import { createCustomParcel } from '@/app/actions/parcel-actions'
 
 export default function AdminCustomParcelCreation() {
   const [formData, setFormData] = useState({
-    trackingCode: '', // New Field
+    trackingCode: '',
+    status: 'LABEL_CREATED', // Added Default Status
     // Sender
     senderName: '', senderPhone: '', senderAddress: '', originCity: '', originCountry: '',
     // Receiver
@@ -15,13 +16,14 @@ export default function AdminCustomParcelCreation() {
     dispatchOffice: '', pickupDate: '', dispatchDate: '', expectedDeliveryDate: '',
   })
   
+  const [forceUppercase, setForceUppercase] = useState(true) // Toggle state for casing
   const [packages, setPackages] = useState([{ name: '', weight: '', quantity: 1 }])
   const [successCode, setSuccessCode] = useState('')
   const [copiedCode, setCopiedCode] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     if (error) setError('')
   }
@@ -54,9 +56,13 @@ export default function AdminCustomParcelCreation() {
     setIsLoading(true)
     setError('')
 
+    // Apply uppercase formatting dynamically based on toggle state before submission
+    const finalTrackingCode = forceUppercase ? formData.trackingCode.toUpperCase() : formData.trackingCode;
+
     try {
       const response = await createCustomParcel({
         ...formData,
+        trackingCode: finalTrackingCode,
         packages: packages.map(p => ({
           name: p.name,
           weight: parseFloat(p.weight),
@@ -70,11 +76,13 @@ export default function AdminCustomParcelCreation() {
         
         // Reset form
         setFormData({
-          trackingCode: '', senderName: '', senderPhone: '', senderAddress: '', originCity: '', originCountry: '',
+          trackingCode: '', status: 'LABEL_CREATED', 
+          senderName: '', senderPhone: '', senderAddress: '', originCity: '', originCountry: '',
           receiverName: '', receiverPhone: '', receiverAddress: '', destinationCity: '', destinationCountry: '',
           dispatchOffice: '', pickupDate: '', dispatchDate: '', expectedDeliveryDate: '',
         })
         setPackages([{ name: '', weight: '', quantity: 1 }])
+        setForceUppercase(true)
         
       } else {
         setError(response.error || 'An error occurred.')
@@ -124,20 +132,35 @@ export default function AdminCustomParcelCreation() {
             <h2 className="flex items-center gap-2 text-lg font-medium text-indigo-900 mb-6">
               <KeyRound className="w-5 h-5 text-indigo-500" /> Custom Tracking Identifier
             </h2>
-            <div className="space-y-2">
-              <label htmlFor="trackingCode" className="block text-[11px] font-bold tracking-widest text-indigo-400 uppercase ml-2">
-                Manual Code *
-              </label>
-              <input
-                type="text"
-                id="trackingCode"
-                name="trackingCode"
-                value={formData.trackingCode}
-                onChange={handleInputChange}
-                placeholder="e.g. VIP-DELIVERY-2026"
-                className="w-full px-6 py-4 rounded-2xl border border-indigo-200 bg-white text-indigo-950 font-mono text-lg uppercase placeholder-indigo-200 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 transition-all shadow-sm"
-              />
-              <p className="text-xs text-indigo-400/80 ml-2 mt-2">Code will be automatically capitalized during creation.</p>
+            <div className="space-y-4">
+              <div className="relative">
+                <label htmlFor="trackingCode" className="block text-[11px] font-bold tracking-widest text-indigo-400 uppercase ml-2 mb-2">
+                  Manual Code *
+                </label>
+                <input
+                  type="text"
+                  id="trackingCode"
+                  name="trackingCode"
+                  value={formData.trackingCode}
+                  onChange={handleInputChange}
+                  placeholder="e.g. VIP-DELIVERY-2026"
+                  className={`w-full px-6 py-4 rounded-2xl border border-indigo-200 bg-white text-indigo-950 font-mono text-lg placeholder-indigo-200 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 transition-all shadow-sm ${forceUppercase ? 'uppercase' : ''}`}
+                />
+              </div>
+
+              {/* Custom Casing Toggle Switch */}
+              <div className="flex items-center justify-between bg-white/50 border border-indigo-100 px-4 py-3 rounded-xl">
+                <span className="text-sm font-medium text-indigo-900">Force uppercase lettering</span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={forceUppercase}
+                  onClick={() => setForceUppercase(!forceUppercase)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${forceUppercase ? 'bg-indigo-600' : 'bg-slate-300'}`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${forceUppercase ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
+              </div>
             </div>
           </section>
 
@@ -179,9 +202,29 @@ export default function AdminCustomParcelCreation() {
               <Building2 className="w-5 h-5 text-indigo-500" /> Shipment Logistics
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="md:col-span-2">
+              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputField label="Dispatch Office *" name="dispatchOffice" value={formData.dispatchOffice} onChange={handleInputChange} placeholder="e.g. Apex Central Hub" />
+                
+                {/* Initial Status Dropdown */}
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-bold tracking-widest text-slate-500 uppercase ml-1">
+                    Initial Status *
+                  </label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white focus:bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
+                  >
+                    <option value="LABEL_CREATED">Label Created</option>
+                    <option value="IN_TRANSIT">In Transit</option>
+                    <option value="EXCEPTION">On Hold / Exception</option>
+                    <option value="OUT_FOR_DELIVERY">Out for Delivery</option>
+                    <option value="DELIVERED">Delivered</option>
+                  </select>
+                </div>
               </div>
+              
               <InputField label="Pickup Date *" name="pickupDate" type="date" value={formData.pickupDate} onChange={handleInputChange} />
               <InputField label="Dispatch Date *" name="dispatchDate" type="date" value={formData.dispatchDate} onChange={handleInputChange} />
               <InputField label="Expected Delivery Date" name="expectedDeliveryDate" type="date" value={formData.expectedDeliveryDate} onChange={handleInputChange} />
