@@ -159,5 +159,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Forces any element with the class 'font-mono' (like our tracking codes) to use JetBrains Mono */
+  .font-mono, code, pre {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
   }
 }
