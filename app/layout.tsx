@@ -1,20 +1,18 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import { ParcelsProvider } from '@/lib/data-context'
 import './globals.css'
 import { CookieBanner } from '@/components/CookieBanner'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 
-// 1. Configure the primary sans-serif font
-const jakarta = Plus_Jakarta_Sans({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
 })
 
-// 2. Configure the monospace font for tracking codes
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
@@ -22,9 +20,9 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Apexbit Cargo Tracking & Logistics',
-  description: 'Modern parcel tracking and logistics management system for Apexbit Cargo. Track your shipments, manage logistics, and ensure secure delivery with our advanced platform.',
-  generator: 'v0.app',
+  title: 'Shiply – Real-time Parcel Tracking',
+  description:
+    'Track your shipments with complete clarity. Real-time status updates, full journey history, and transparent logistics from origin to delivery.',
   icons: {
     icon: [
       {
@@ -36,20 +34,17 @@ export const metadata: Metadata = {
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/gemini-svg.svg',
+        url: '/icon.png',
         type: 'image/svg+xml',
       },
     ],
-    apple: '/gemini-svg.svg',
+    apple: '/icon.png',
   },
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#1a1a1a' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#ffffff',
 }
 
 export default function RootLayout({
@@ -58,10 +53,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    // 3. Inject the CSS variables into the HTML tag alongside your existing background class
-    <html lang="en" className={`bg-background ${jakarta.variable} ${jetbrainsMono.variable}`}>
-      {/* 4. Add 'font-sans' here so the whole app inherits it by default */}
-      <body className="font-sans antialiased bg-white">
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans antialiased bg-white text-slate-900">
         <Navbar />
         <ParcelsProvider>{children}</ParcelsProvider>
         <CookieBanner />

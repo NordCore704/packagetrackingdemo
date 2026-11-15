@@ -40,7 +40,7 @@ export default function AdminRegister() {
         <div className="flex justify-center mb-8 text-white">
           <div className="flex items-center gap-2 group">
             <Package className="w-8 h-8 text-indigo-400" />
-            <span className="font-semibold text-2xl tracking-tight text-black">Apexbit Cargo</span>
+            <span className="font-semibold text-2xl tracking-tight text-black">Shiply Cargo</span>
           </div>
         </div>
 

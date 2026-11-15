@@ -48,11 +48,11 @@ export function AppNavigation() {
               <Package className="w-6 h-6 text-primary-foreground" />
             </div> */}
             <div className="hidden sm:block">
-              <h1 className="text-2xl font-bold text-foreground">ApexBit</h1>
+              <h1 className="text-2xl font-bold text-foreground">Shiply Cargo</h1>
               <p className="text-xs text-muted-foreground">Parcel Tracking & Logistics</p>
             </div>
             <div className="sm:hidden">
-              <h1 className="text-xl font-bold text-foreground">ApexBit</h1>
+              <h1 className="text-xl font-bold text-foreground">Shiply Cargo</h1>
             </div>
           </div>
 

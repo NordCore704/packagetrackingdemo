@@ -1,42 +1,64 @@
-import { CheckCircle, Clock, Truck, AlertCircle } from 'lucide-react'
+import { CheckCircle2, Clock, Truck, AlertTriangle, Package } from 'lucide-react'
 
 interface StatusBadgeProps {
   status: string
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {
-  const getStatusStyles = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'delivered':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-      case 'out for delivery':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-      case 'in transit':
-        return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
-      case 'pending':
-        return 'bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200'
-      default:
-        return 'bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200'
-    }
+  const normalized = status.toLowerCase().replace(/_/g, ' ')
+
+  const config: Record<string, { bg: string; text: string; icon: React.ReactNode; label: string }> = {
+    delivered: {
+      bg: 'bg-emerald-50 border-emerald-200',
+      text: 'text-emerald-700',
+      icon: <CheckCircle2 className="w-4 h-4" />,
+      label: 'Delivered',
+    },
+    'out for delivery': {
+      bg: 'bg-sky-50 border-sky-200',
+      text: 'text-sky-700',
+      icon: <Truck className="w-4 h-4" />,
+      label: 'Out for Delivery',
+    },
+    'in transit': {
+      bg: 'bg-amber-50 border-amber-200',
+      text: 'text-amber-700',
+      icon: <Clock className="w-4 h-4" />,
+      label: 'In Transit',
+    },
+    'label created': {
+      bg: 'bg-slate-50 border-slate-200',
+      text: 'text-slate-600',
+      icon: <Package className="w-4 h-4" />,
+      label: 'Label Created',
+    },
+    'held at customs': {
+      bg: 'bg-orange-50 border-orange-200',
+      text: 'text-orange-700',
+      icon: <AlertTriangle className="w-4 h-4" />,
+      label: 'Held at Customs',
+    },
+    exception: {
+      bg: 'bg-red-50 border-red-200',
+      text: 'text-red-700',
+      icon: <AlertTriangle className="w-4 h-4" />,
+      label: 'Exception',
+    },
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'delivered':
-        return <CheckCircle className="w-4 h-4" />
-      case 'out for delivery':
-        return <Truck className="w-4 h-4" />
-      case 'in transit':
-        return <Clock className="w-4 h-4" />
-      default:
-        return <AlertCircle className="w-4 h-4" />
-    }
+  const style = config[normalized] || {
+    bg: 'bg-slate-50 border-slate-200',
+    text: 'text-slate-600',
+    icon: <Package className="w-4 h-4" />,
+    label: status.replace(/_/g, ' '),
   }
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${getStatusStyles(status)}`}>
-      {getStatusIcon(status)}
-      {status}
+    <span
+      className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border text-sm font-medium ${style.bg} ${style.text}`}
+    >
+      {style.icon}
+      {style.label}
     </span>
   )
 }
